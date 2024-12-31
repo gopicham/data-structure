@@ -3,7 +3,11 @@
  */
 package com.map.hashmap;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
+import java.util.List;
 import java.util.Set;
 
 /**
@@ -75,6 +79,26 @@ public class Main {
 		System.out.println("keys are : " + keys2);
 		Collection<String> value1s = map.values();
 		System.out.println("values are :" + value1s);
+
+		Set<Node<Integer, String>> entrySet = map.entrySet();
+
+		List<Node<Integer, String>> list = new ArrayList<Node<Integer, String>>(entrySet);
+
+		Collections.sort(list, new Comparator<Node<Integer, String>>() {
+
+			@Override
+			public int compare(Node<Integer, String> o1, Node<Integer, String> o2) {
+				if (o2.key < o1.key) {
+					return -1;
+				} else if (o2.key > o1.key) {
+					return 1;
+				} else
+					return 0;
+			}
+		});
+		for (Node<Integer, String> nodes : list) {
+			System.out.print(nodes.getKey() + " ");
+		}
 	}
 
 }

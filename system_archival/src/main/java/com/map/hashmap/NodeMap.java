@@ -5,11 +5,16 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
+/**
+ * 
+ * @author manjunath.gopichand
+ */
+
 @SuppressWarnings("unchecked")
 public class NodeMap<K, V> {
 
-	int INITIAL_CAPACITY = 16;
-	int size;
+	private final int INITIAL_CAPACITY = 16;
+	private int size;
 	private int threshold;
 	private static final float LOAD_FACTOR = 0.75f;
 
@@ -118,10 +123,16 @@ public class NodeMap<K, V> {
 	public Set<Node<K, V>> entrySet() {
 
 		final Set<Node<K, V>> set = new HashSet<Node<K, V>>();
-		for (Node<K, V> entryNode : table) {
-			if (entryNode != null)
-				set.add(entryNode);
+
+		Node<K, V>[] entryNode = table;
+		for (int i = 0; i < entryNode.length; i++) {
+			Node<K, V> entry = entryNode[i];
+			while (entry != null) {
+				set.add(entry);
+				entry = entry.next;
+			}
 		}
+
 		return set;
 	}
 
@@ -138,16 +149,17 @@ public class NodeMap<K, V> {
 	}
 
 	public Collection<V> values() {
+		
 		final Collection<V> values = new ArrayList<V>();
-		for (Node<K, V> entry : table) {
-			if (entry != null) {
+		final Node<K, V>[] entryNode = table;
+		for (int i = 0; i < entryNode.length; i++) {
+			Node<K, V> entry = entryNode[i];
+			while (entry != null) {
 				values.add(entry.value);
-				if (entry.next != null) {
-					values.add(entry.next.value);
-				}
+				entry = entry.next;
 			}
-
 		}
+
 		return values;
 	}
 
